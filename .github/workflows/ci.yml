@@ -18,6 +18,11 @@ jobs:
           distribution: "temurin"
           java-version: "21"
           cache: "gradle"
-
+      - name: Set gradlew as executable
+        run: chmod +x ./gradlew
+      - name: Clean gradlew cache
+        run: ./gradlew clean
+      - name: Run unit tests
+        run: ./gradlew test
       - name: Run unit tests
         run: ./gradlew test
