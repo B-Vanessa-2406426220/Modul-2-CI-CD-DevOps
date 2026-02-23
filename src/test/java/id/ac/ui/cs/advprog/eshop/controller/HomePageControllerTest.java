@@ -16,6 +16,6 @@ class HomePageControllerTest {
 
     @Test
     void testHomePage() throws Exception {
-        mockMvc.perform(get("/")).andExpect(status().isOk()).andExpect(view().name("homePage"));
+        mockMvc.perform(get("/")).andExpect(status().isOk()).andExpect(view().name("HomePage"));
     }
 }
