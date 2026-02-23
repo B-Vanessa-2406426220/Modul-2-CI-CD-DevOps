@@ -11,6 +11,7 @@ sonar {
         property("sonar.projectKey", "B-Vanessa-2406426220_Modul-2-CI-CD-DevOps")
         property("sonar.organization", "b-vanessa-2406426220")
         property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml")
     }
 }
 
