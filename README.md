@@ -37,9 +37,9 @@ Issues yang dideteksi oleh SonarCloud dan perbaikannya:
 
 Menurut saya, implementasi saat ini sudah memenuhi definisi Continuous Integration (CI) dan Continuous Deployment (CD). 
 
-**Continuous Integration** terpenuhi karena setiap kali ada perubahan kode yang di-push ke repositori, GitHub Actions secara otomatis menjalankan rangkaian unit test dan analisis kualitas kode melalui SonarCloud. Proses ini memastikan bahwa setiap integrasi kode baru tetap memenuhi standar kualitas dan tidak merusak fitur yang sudah ada sebelumnya.
+**Continuous Integration** terpenuhi karena saya telah mengonfigurasi pipeline otomatis menggunakan GitHub Actions yang dipicu oleh setiap push ke repositori. Rangkaian ini mencakup eksekusi unit test secara otomatis dan integrasi dengan SonarCloud untuk melakukan analisis kualitas kode statis (static code analysis). Proses ini memastikan bahwa setiap integrasi kode baru tetap memenuhi standar kualitas dan tidak merusak fitur yang sudah ada sebelumnya.
 
-**Continuous Deployment** juga telah tercapai melalui integrasi otomatis dengan platform Koyeb. Setelah kode berhasil melewati tahap CI dan di-merge ke branch main, Koyeb secara otomatis melakukan build ulang menggunakan Docker dan memperbarui aplikasi di lingkungan produksi. 
+**Continuous Deployment** juga telah tercapai melalui integrasi otomatis dengan platform Koyeb. Setelah kode berhasil melewati tahap CI dan di-merge ke branch main, Koyeb secara otomatis melakukan build ulang menggunakan Docker dan memperbarui aplikasi di lingkungan produksi. Proses ini memastikan aplikasi di lingkungan produksi selalu diperbarui ke versi stabil terbaru secara instan dan otomatis, tanpa memerlukan intervensi manual tambahan.
 
 ---
 </details>
