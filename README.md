@@ -1,3 +1,50 @@
+## Deployment Link
+Aplikasi telah dideploy secara otomatis menggunakan Koyeb dan dapat diakses melalui tautan berikut:
+- **URL:** [https://vital-mirna-eshop-vanessa-d6b7e78e.koyeb.app/product/list](https://vital-mirna-eshop-vanessa-d6b7e78e.koyeb.app/product/list)
+
+<details>
+<summary>Module 2</summary>
+
+# Module 2 
+
+### 1. List the code quality issue(s) that you fixed during the exercise and explain your strategy on fixing them.
+
+Issues yang dideteksi oleh SonarCloud dan perbaikannya:
+
+* **Risiko Keamanan (Izin GitHub Actions)**
+    * **Masalah:** File `scorecard.yml` menggunakan `permissions: read-all`, yang memberikan hak akses baca ke seluruh repositori secara berlebihan.
+    * **Strategi:** Membatasi izin menjadi hanya `contents: read` untuk mengikuti prinsip hak akses minimum, sehingga mengurangi risiko keamanan.
+* **Deklarasi Exception yang Redundan**
+    * **Masalah:** Penggunaan `throws Exception` pada test method padahal tidak ada checked exception yang dilempar.
+    * **Strategi:** Menghapus deklarasi tersebut agar kode lebih bersih.
+* **Metode Kosong (Empty Method)**
+    * **Masalah:** Adanya metode `setUp()` yang kosong di `ProductRepositoryTest` tanpa komentar penjelas.
+    * **Strategi:** Menambahkan baris komentar karena inisialisasi sudah ditangani secara otomatis oleh anotasi `@InjectMocks`, sehingga menghilangkan kode yang tidak berfungsi (*dead code*).
+* **Perbaikan Dependency Injection**
+    * **Masalah:** Penggunaan Field Injection (`@Autowired` pada variabel langsung) yang dianggap kurang baik untuk pengujian unit.
+    * **Strategi:** Mengubahnya menjadi Constructor Injection pada Controller agar dependensi menjadi transparan, mempermudah pengujian, dan mendukung prinsip imutabilitas.
+* **Penggunaan Tag Anchor sebagai Tombol (Accessibility)**
+    * **Masalah:** Penggunaan tag `<a>` untuk aksi fungsional (seperti tombol hapus/edit) yang seharusnya dilakukan oleh elemen `<button>`.
+    * **Strategi:** Menambahkan atribut `role="button"` pada tag `<a>` untuk menginformasikan bahwa elemen ini berfungsi sebagai tombol aksi, bukan sekadar link biasa
+* **Import yang Tidak Digunakan (Unused Import)**
+    * **Masalah:** Adanya import `org.openqa.selenium.WebElement` yang tidak lagi digunakan dalam kode.
+    * **Strategi:** Menghapus impor tersebut untuk merapikan bagian header file dan mengurangi polusi kode.
+* **Kode yang Di-comment (Commented-out Code)**
+    * **Masalah:** Terdapat blok kode yang dinonaktifkan dengan komentar di dalam file Java.
+    * **Strategi:** Menghapus blok kode tersebut karena riwayat perubahan sudah terekam dengan aman di sistem kontrol versi (Git), sehingga kode utama tetap bersih dan mudah dibaca.
+
+### 2. Look at your CI/CD workflows (GitHub)/pipelines (GitLab). Do you think the current implementation has met the definition of Continuous Integration and Continuous Deployment? Explain the reasons (minimum 3 sentences)!
+
+
+
+
+
+---
+</details>
+
+<details>
+<summary>Module 1
+</summary>
 # Module 1
 
 ## Reflection 1 
@@ -112,3 +159,4 @@ Pendekatan yang lebih bersih adalah dengan membuat sebuah *base functional test 
 - Metode setup umum untuk inisialisasi environment testing
 
 Kelas-kelas functional test lainnya cukup melakukan `extends` terhadap base class tersebut dan tiap file dapat fokus ke satu fungsi. Dengan cara ini, kode menjadi lebih terstruktur, mudah dirawat, dan skalabel.
+</details>
