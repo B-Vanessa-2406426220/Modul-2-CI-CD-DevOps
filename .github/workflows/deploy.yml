@@ -1,0 +1,19 @@
+name: Deployment to Koyeb
+
+on:
+  push:
+    branches:
+      - module-2-exercise
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Notify Deployment
+        run: |
+          echo "Triggering pull-based deployment on Koyeb..."
+          echo "The application is being built and deployed via Dockerfile at: https://vital-mirna-eshop-vanessa-d6b7e78e.koyeb.app/"
