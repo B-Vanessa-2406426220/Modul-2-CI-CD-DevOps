@@ -18,6 +18,7 @@ class ProductRepositoryTest {
     ProductRepository productRepository;
     @BeforeEach
     void setUp() {
+        // Method is intentionally empty as @InjectMocks handles the initialization.
     }
     @Test
     void testCreateAndFind() {
