@@ -1,6 +1,6 @@
 ## Deployment Link
 Aplikasi telah dideploy secara otomatis menggunakan Koyeb dan dapat diakses melalui tautan berikut:
-- **URL:** [https://vital-mirna-eshop-vanessa-d6b7e78e.koyeb.app/product/list](https://vital-mirna-eshop-vanessa-d6b7e78e.koyeb.app/product/list)
+- **URL:** [https://vital-mirna-eshop-vanessa-d6b7e78e.koyeb.app](https://vital-mirna-eshop-vanessa-d6b7e78e.koyeb.app)
 
 <details>
 <summary>Module 2</summary>
