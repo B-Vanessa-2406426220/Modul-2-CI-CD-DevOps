@@ -7,9 +7,6 @@
     <title>Edit Car</title>
 </head>
 <body class="bg-gray-100">
-<div class="container mx-auto mt-8">
-    <h1 class="text-3xl font-bold mb-4">Edit Car</h1>
-
     <form th:action="@{/car/editCar}" method="post" th:object="${car}" class="max-w-md bg-white p-6 rounded-md shadow-md">
         <input type="hidden" th:field="*{carId}" />
         <div class="mb-4">
