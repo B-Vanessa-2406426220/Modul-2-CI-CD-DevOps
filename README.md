@@ -3,6 +3,73 @@ Aplikasi telah dideploy secara otomatis menggunakan Koyeb dan dapat diakses mela
 - **URL:** [https://vital-mirna-eshop-vanessa-d6b7e78e.koyeb.app](https://vital-mirna-eshop-vanessa-d6b7e78e.koyeb.app)
 
 <details>
+<summary>Module 3</summary>
+
+# Module 3
+
+### 1. Jelaskan prinsip-prinsip apa saja yang kamu terapkan pada proyek ini!
+
+Prinsip SOLID yang diterapkan pada proyek eshop ini:
+
+* **Single Responsibility Principle (SRP)**
+    * Setiap class hanya memiliki satu tanggung jawab. Controller hanya menangani HTTP request, service hanya mengelola logika bisnis, dan repository hanya menangani penyimpanan data.
+    * **Contoh:** CarController sebelumnya berada di file yang sama dengan ProductController dan bahkan melakukan inheritance yang tidak perlu. Pisahkan CarController ke file sendiri. Pastikan CarServiceImpl hanya mengurusi logika bisnis, dan CarRepository hanya mengurusi data.
+
+
+* **Open/Closed Principle (OCP)**
+    * Kode harus terbuka untuk ekstensi tetapi tertutup untuk modifikasi. Hal ini diterapkan dengan membuat interface `ProductRepositoryInterface` dan `CarRepositoryInterface`.
+    * **Contoh:** Jika ingin mengganti penyimpanan dari in-memory `ArrayList` ke database, cukup buat class baru yang mengimplementasi `ProductRepositoryInterface` tanpa mengubah kode `ProductServiceImpl` sama sekali.
+
+* **Liskov Substitution Principle (LSP)**
+    * Objek dari subclass harus bisa menggantikan objek superclass tanpa merusak program. Controller mendeklarasikan tipe interface, bukan implementasi konkret.
+    * **Contoh:** `ProductController` menggunakan tipe `ProductService` (interface), sehingga `ProductServiceImpl` bisa diganti dengan implementasi lain tanpa mengubah controller.
+
+* **Interface Segregation Principle (ISP)**
+    * Interface harus spesifik dan fokus, client tidak boleh dipaksa bergantung pada method yang tidak mereka gunakan.
+    * **Contoh:** `ProductService` dan `CarService` dipisahkan menjadi dua interface yang masing-masing hanya memiliki 5 method relevan, bukan satu interface besar. Selain itu, method `deleteCarById` pada `CarService` telah di-rename menjadi `delete` agar konsisten dan tidak memaksakan penamaan spesifik.
+
+* **Dependency Inversion Principle (DIP)**
+    * Modul tingkat tinggi tidak boleh bergantung pada modul tingkat rendah; keduanya harus bergantung pada abstraksi. Semua dependency menggunakan constructor injection dan bergantung pada interface.
+    * **Contoh:** Sebelumnya `CarServiceImpl` menggunakan field injection (`@Autowired private CarRepository`) yang bergantung pada concrete class. Setelah refactoring, diubah menjadi constructor injection dengan tipe `CarRepositoryInterface` (interface). Hal yang sama diterapkan pada `CarController` yang kini menggunakan constructor injection untuk `CarService`.
+
+### 2. Jelaskan keuntungan menerapkan prinsip SOLID pada proyek ini beserta contohnya.
+
+* **Mudah di-extend tanpa memodifikasi kode yang ada (OCP)**
+    * Dengan adanya `ProductRepositoryInterface`, jika ingin beralih dari in-memory ke database, cukup buat class baru seperti `JpaProductRepository implements ProductRepositoryInterface`. Tidak perlu mengubah satu baris pun di `ProductServiceImpl` atau `ProductController`, sehingga mengurangi risiko memperkenalkan bug.
+
+* **Mudah di-test (DIP + SRP)**
+    * Karena service bergantung pada interface (bukan concrete class), kita bisa dengan mudah membuat mock dalam unit test menggunakan `@Mock ProductRepositoryInterface`. Test berjalan cepat tanpa perlu koneksi database atau setup yang rumit.
+
+* **Kode lebih mudah dipahami dan dikelola (SRP)**
+    * Setiap class memiliki tanggung jawab yang jelas. Ketika ada bug pada penyimpanan data, developer langsung tahu harus melihat ke repository. Ketika ada masalah routing, langsung periksa controller. Tidak ada pencampuran tanggung jawab.
+
+* **Perubahan terisolasi dan minim dampak (LSP + ISP)**
+    * Karena controller bergantung pada interface, kita bisa mengganti implementasi kapan saja selama kontrak interface terpenuhi. Misalnya, bisa membuat `CachedProductServiceImpl` untuk menambahkan caching tanpa mengubah controller.
+
+* **Fleksibilitas tinggi (DIP)**
+    * Constructor injection membuat dependency eksplisit. Jika ingin mengganti implementasi service, cukup ubah konfigurasi Spring tanpa mengubah kode controller.
+
+### 3. Jelaskan kerugian jika tidak menerapkan prinsip SOLID pada proyek ini beserta contohnya.
+
+* **Kode sulit di-test (tanpa DIP)**
+    * Sebelum refactoring, `CarServiceImpl` menggunakan field injection dengan concrete class `CarRepository`. Ini membuat unit testing sulit karena tidak bisa mengganti repository dengan mock tanpa reflection, dan test bergantung pada implementasi konkret yang rentan rusak jika repository berubah.
+
+* **Perubahan berantai / ripple effect (tanpa OCP)**
+    * Tanpa interface, jika mengubah nama method atau return type di `ProductRepository`, maka `ProductServiceImpl` juga harus diubah, bahkan bisa berdampak ke `ProductController`. Satu perubahan kecil memicu perubahan besar di banyak tempat.
+
+* **Tanggung jawab campur aduk (tanpa SRP)**
+    * Sebelum refactoring, `CarController` memiliki `System.out.println()` debug logging di dalam method `editCarPost()`. Controller menjadi tempat "dump" untuk berbagai kode yang tidak relevan, membuat debugging sulit dan kode tidak modular.
+
+* **Interface yang terlalu gemuk (tanpa ISP)**
+    * Jika `ProductService` dan `CarService` digabungkan menjadi satu interface besar `EshopService`, maka `ProductController` dipaksa bergantung pada method-method car yang tidak relevan. Ini membuat kode menjadi *tightly coupled* dan rentan terhadap perubahan yang tidak terkait.
+
+* **Substitusi menjadi tidak aman (tanpa LSP)**
+    * Jika subclass mengubah perilaku yang diharapkan (misalnya throw exception alih-alih return `null`), program bisa crash secara tidak terduga. Contohnya, jika implementasi `CarService` yang baru memiliki method `findById()` yang throw exception ketika car tidak ditemukan, maka `CarController` akan error karena mengasumsikan perilaku tertentu.
+
+---
+</details>
+
+<details>
 <summary>Module 2</summary>
 
 # Module 2 
