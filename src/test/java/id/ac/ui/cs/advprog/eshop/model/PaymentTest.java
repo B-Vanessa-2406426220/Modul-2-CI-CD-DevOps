@@ -184,6 +184,15 @@ public class PaymentTest {
     }
 
     @Test
+    void testVoucherWithExactly16CharactersButNot8Numbers() {
+        Map<String, String> invalidVoucherData = new HashMap<>();
+        invalidVoucherData.put("voucherCode", "ESHOP1234567ABCD");
+
+        Payment testPayment = new Payment("id", order, PaymentMethod.VOUCHER.getValue(), invalidVoucherData);
+        assertEquals(PaymentStatus.REJECTED.getValue(), testPayment.getStatus());
+    }
+
+    @Test
     void testVoucherWithMoreThan8Numbers() {
         Map<String, String> invalidVoucherData = new HashMap<>();
         invalidVoucherData.put("voucherCode", "ESHOP1234567890AB");
@@ -262,5 +271,39 @@ public class PaymentTest {
 
         assertEquals(PaymentStatus.SUCCESS.getValue(), payment.getStatus());
         assertEquals(validBankData, payment.getPaymentData());
+    }
+
+    @Test
+    void testBankTransferWithEmptyReferenceCodeOnly() {
+        Map<String, String> invalidBankData = new HashMap<>();
+        invalidBankData.put("bankName", "BCA");
+        invalidBankData.put("referenceCode", "");
+
+        Payment testPayment = new Payment("bank-payment-id", order,
+                PaymentMethod.TRANSFER_BANK.getValue(), invalidBankData);
+
+        assertEquals(PaymentStatus.REJECTED.getValue(), testPayment.getStatus());
+    }
+
+    @Test
+    void testSetStatusInvalidThrowException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            payment.setStatus("STATUS_YANG_TIDAK_ADA");
+        });
+    }
+
+    @Test
+    void testSetMethodInvalidThrowException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            payment.setMethod("METODE_YANG_TIDAK_ADA");
+        });
+    }
+
+    @Test
+    void testPaymentWithUnhandledMethod() {
+        Map<String, String> paymentData = new HashMap<>();
+        Payment testPayment = new Payment("id", order, "CASH", paymentData);
+
+        assertEquals(PaymentStatus.REJECTED.getValue(), testPayment.getStatus());
     }
 }
