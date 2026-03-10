@@ -21,6 +21,7 @@ class PaymentRepositoryTest {
     @BeforeEach
     void setUp() {
         paymentRepository = new PaymentRepository();
+        payments = new ArrayList<>();
 
         List<Product> products = new ArrayList<>();
         Product product = new Product();
