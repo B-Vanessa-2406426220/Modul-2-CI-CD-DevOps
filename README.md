@@ -12,19 +12,18 @@ Pada awalnya menerapkan alur *Test-Driven Development* (TDD) terasa sedikit tida
 
 Dengan membuat test terlebih dahulu (fase **Red**), saya dipaksa memikirkan skenario-skenario kegagalan sejak awal. Misalnya, saat menentukan apa yang terjadi jika status order tidak valid. TDD memberikan confidence karena setiap kali saya mengubah kode (refactoring), saya tidak perlu takut merusak fitur yang sudah jalan, cukup jalankan test, dan jika tetap hijau, berarti semuanya aman.
 
-Kelemahan saya saat ini adalah saya masih terlalu sering mengikuti skenario ideal atau happy path. Kedepannya, saya ingin lebih berani membuat negative test yang lebih kompleks. Saya harus lebih disiplin untuk selalu mulai dari kegagalan test terlebih dahulu agar logika kodenya benar-benar teruji.
+Kelemahan saya saat ini adalah saya masih terlalu sering mengikuti skenario ideal (happy path). Kedepannya, hal yang harus saya lakukan adalah lebih proaktif memikirkan nilai batas (boundary values) dan corner cases sejak fase pembuatan test pertama, sehingga logika kode benar-benar kuat dan teruji dari segala sisi sebelum implementasinya ditulis.
 
 
 ### 2. You have created unit tests in Tutorial. Now reflect whether your tests have successfully followed F.I.R.S.T. principle or not. If not, explain things that you need to do the next time you create more tests.
-Rangkaian unit test yang saya susun untuk layer Model, Repository, dan Service pada fitur Order telah dirancang sedemikian rupa untuk memenuhi standar kualitas pengujian melalui prinsip **F.I.R.S.T.** (Fast, Independent, Repeatable, Self-Validating, Timely).
+Secara keseluruhan, rangkaian unit test yang saya susun untuk layer Model, Repository, dan Service pada fitur Order telah dirancang sedemikian rupa untuk memenuhi standar kualitas pengujian melalui prinsip **F.I.R.S.T.** (Fast, Independent, Repeatable, Self-Validating, Timely), dengan rincian sebagai berikut:
 
-* **Fast:** Pengujian berjalan sangat cepat karena penggunaan *mocking* (Mockito) pada layer Service, sehingga tidak bergantung pada resource eksternal.
-* **Independent:** Setiap test bersifat otonom. Penggunaan `@BeforeEach` memastikan data antar-test tidak saling tumpang tindih (*state isolation*).
-* **Repeatable:** Hasil pengujian konsisten karena menggunakan data statis (UUID dan timestamp yang ditentukan), sehingga bisa dijalankan kapan pun dengan hasil yang sama.
-* **Self-Validating:** Test sudah menggunakan *assertion* otomatis (JUnit) yang langsung memberikan status lulus/gagal secara objektif.
-* **Timely:** Test ditulis beriringan dengan pengerjaan fitur, menjaga setiap perubahan kode tetap terkendali sejak awal.
+* **Fast:** Pengujian berjalan sangat cepat karena penggunaan *mocking* (Mockito) pada layer Service, sehingga tidak bergantung pada resource eksternal membantu mempercepat eksekusi test.
+* **Independent:** Setiap test bersifat otonom dan tidak bergantung satu sama lain. Penggunaan `@BeforeEach` memastikan data antar-test tidak saling tumpang tindih, mencegah test leakage (data test yang bocor dan dapat merusak test lain).
+* **Repeatable:** Hasil pengujian konsisten karena menggunakan data statis yang dapat diprediksi (seperti UUID dan timestamp yang ditentukan) pada mocking, sehingga bisa dijalankan kapan pun dengan hasil yang sama.
+* **Self-Validating:** Test sudah menggunakan *assertion* otomatis (JUnit) yang langsung memberikan status lulus/gagal secara objektif. Tidak perlu lagi inspeksi visual atau pengecekan print console secara manual
+* **Timely:** Test ditulis beriringan dengan pengerjaan fitur, menjaga setiap perubahan kode tetap terkendali sejak awal. Namun, ini adalah area yang masih perlu saya tingkatkan. Dalam TDD, test ditulis sebelum menulis kode produksi. Namun pada praktiknya, kadang saya masih menulis kerangka kode produksi dulu baru merapikan test-nya lagi. Ke depannya, saya harus lebih disiplin menjaga siklus Red-Green-Refactor secara berurutan.
 
-</details>
 </details>
 
 <details>
