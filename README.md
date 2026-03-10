@@ -3,6 +3,31 @@ Aplikasi telah dideploy secara otomatis menggunakan Koyeb dan dapat diakses mela
 - **URL:** [https://vital-mirna-eshop-vanessa-d6b7e78e.koyeb.app](https://vital-mirna-eshop-vanessa-d6b7e78e.koyeb.app)
 
 <details>
+<summary>Module 4</summary>
+
+# Module 4
+
+### 1. Reflect based on Percival (2017) proposed self-reflective questions (in “Principles and Best Practice of Testing” submodule, chapter “Evaluating Your Testing Objectives”), whether this TDD flow is useful enough for you or not. If not, explain things that you need to do next time you make more tests.
+Pada awalnya menerapkan alur *Test-Driven Development* (TDD) terasa sedikit tidak alami karena saya harus memikirkan cara menguji sesuatu yang kodenya bahkan belum ada. Namun, setelah saya mengerjakan fitur **Order**, saya mulai merasakan manfaatnya 
+
+Dengan membuat test terlebih dahulu (fase **Red**), saya dipaksa memikirkan skenario-skenario kegagalan sejak awal. Misalnya, saat menentukan apa yang terjadi jika status order tidak valid. TDD memberikan confidence karena setiap kali saya mengubah kode (refactoring), saya tidak perlu takut merusak fitur yang sudah jalan, cukup jalankan test, dan jika tetap hijau, berarti semuanya aman.
+
+Kelemahan saya saat ini adalah saya masih terlalu sering mengikuti skenario ideal atau happy path. Kedepannya, saya ingin lebih berani membuat negative test yang lebih kompleks. Saya harus lebih disiplin untuk selalu mulai dari kegagalan test terlebih dahulu agar logika kodenya benar-benar teruji.
+
+
+### 2. You have created unit tests in Tutorial. Now reflect whether your tests have successfully followed F.I.R.S.T. principle or not. If not, explain things that you need to do the next time you create more tests.
+Rangkaian unit test yang saya susun untuk layer Model, Repository, dan Service pada fitur Order telah dirancang sedemikian rupa untuk memenuhi standar kualitas pengujian melalui prinsip **F.I.R.S.T.** (Fast, Independent, Repeatable, Self-Validating, Timely).
+
+* **Fast:** Pengujian berjalan sangat cepat karena penggunaan *mocking* (Mockito) pada layer Service, sehingga tidak bergantung pada resource eksternal.
+* **Independent:** Setiap test bersifat otonom. Penggunaan `@BeforeEach` memastikan data antar-test tidak saling tumpang tindih (*state isolation*).
+* **Repeatable:** Hasil pengujian konsisten karena menggunakan data statis (UUID dan timestamp yang ditentukan), sehingga bisa dijalankan kapan pun dengan hasil yang sama.
+* **Self-Validating:** Test sudah menggunakan *assertion* otomatis (JUnit) yang langsung memberikan status lulus/gagal secara objektif.
+* **Timely:** Test ditulis beriringan dengan pengerjaan fitur, menjaga setiap perubahan kode tetap terkendali sejak awal.
+
+</details>
+</details>
+
+<details>
 <summary>Module 3</summary>
 
 # Module 3
@@ -12,59 +37,59 @@ Aplikasi telah dideploy secara otomatis menggunakan Koyeb dan dapat diakses mela
 Prinsip SOLID yang diterapkan pada proyek eshop ini:
 
 * **Single Responsibility Principle (SRP)**
-    * Setiap class hanya memiliki satu tanggung jawab. Controller hanya menangani HTTP request, service hanya mengelola logika bisnis, dan repository hanya menangani penyimpanan data.
-    * **Contoh:** CarController sebelumnya berada di file yang sama dengan ProductController dan bahkan melakukan inheritance yang tidak perlu. Pisahkan CarController ke file sendiri. Pastikan CarServiceImpl hanya mengurusi logika bisnis, dan CarRepository hanya mengurusi data.
+  * Setiap class hanya memiliki satu tanggung jawab. Controller hanya menangani HTTP request, service hanya mengelola logika bisnis, dan repository hanya menangani penyimpanan data.
+  * **Contoh:** CarController sebelumnya berada di file yang sama dengan ProductController dan bahkan melakukan inheritance yang tidak perlu. Pisahkan CarController ke file sendiri. Pastikan CarServiceImpl hanya mengurusi logika bisnis, dan CarRepository hanya mengurusi data.
 
 
 * **Open/Closed Principle (OCP)**
-    * Kode harus terbuka untuk ekstensi tetapi tertutup untuk modifikasi. Hal ini diterapkan dengan membuat interface `ProductRepositoryInterface` dan `CarRepositoryInterface`.
-    * **Contoh:** Jika ingin mengganti penyimpanan dari in-memory `ArrayList` ke database, cukup buat class baru yang mengimplementasi `ProductRepositoryInterface` tanpa mengubah kode `ProductServiceImpl` sama sekali.
+  * Kode harus terbuka untuk ekstensi tetapi tertutup untuk modifikasi. Hal ini diterapkan dengan membuat interface `ProductRepositoryInterface` dan `CarRepositoryInterface`.
+  * **Contoh:** Jika ingin mengganti penyimpanan dari in-memory `ArrayList` ke database, cukup buat class baru yang mengimplementasi `ProductRepositoryInterface` tanpa mengubah kode `ProductServiceImpl` sama sekali.
 
 * **Liskov Substitution Principle (LSP)**
-    * Objek dari subclass harus bisa menggantikan objek superclass tanpa merusak program. Controller mendeklarasikan tipe interface, bukan implementasi konkret.
-    * **Contoh:** `ProductController` menggunakan tipe `ProductService` (interface), sehingga `ProductServiceImpl` bisa diganti dengan implementasi lain tanpa mengubah controller.
+  * Objek dari subclass harus bisa menggantikan objek superclass tanpa merusak program. Controller mendeklarasikan tipe interface, bukan implementasi konkret.
+  * **Contoh:** `ProductController` menggunakan tipe `ProductService` (interface), sehingga `ProductServiceImpl` bisa diganti dengan implementasi lain tanpa mengubah controller.
 
 * **Interface Segregation Principle (ISP)**
-    * Interface harus spesifik dan fokus, client tidak boleh dipaksa bergantung pada method yang tidak mereka gunakan.
-    * **Contoh:** `ProductService` dan `CarService` dipisahkan menjadi dua interface yang masing-masing hanya memiliki 5 method relevan, bukan satu interface besar. Selain itu, method `deleteCarById` pada `CarService` telah di-rename menjadi `delete` agar konsisten dan tidak memaksakan penamaan spesifik.
+  * Interface harus spesifik dan fokus, client tidak boleh dipaksa bergantung pada method yang tidak mereka gunakan.
+  * **Contoh:** `ProductService` dan `CarService` dipisahkan menjadi dua interface yang masing-masing hanya memiliki 5 method relevan, bukan satu interface besar. Selain itu, method `deleteCarById` pada `CarService` telah di-rename menjadi `delete` agar konsisten dan tidak memaksakan penamaan spesifik.
 
 * **Dependency Inversion Principle (DIP)**
-    * Modul tingkat tinggi tidak boleh bergantung pada modul tingkat rendah; keduanya harus bergantung pada abstraksi. Semua dependency menggunakan constructor injection dan bergantung pada interface.
-    * **Contoh:** Sebelumnya `CarServiceImpl` menggunakan field injection (`@Autowired private CarRepository`) yang bergantung pada concrete class. Setelah refactoring, diubah menjadi constructor injection dengan tipe `CarRepositoryInterface` (interface). Hal yang sama diterapkan pada `CarController` yang kini menggunakan constructor injection untuk `CarService`.
+  * Modul tingkat tinggi tidak boleh bergantung pada modul tingkat rendah; keduanya harus bergantung pada abstraksi. Semua dependency menggunakan constructor injection dan bergantung pada interface.
+  * **Contoh:** Sebelumnya `CarServiceImpl` menggunakan field injection (`@Autowired private CarRepository`) yang bergantung pada concrete class. Setelah refactoring, diubah menjadi constructor injection dengan tipe `CarRepositoryInterface` (interface). Hal yang sama diterapkan pada `CarController` yang kini menggunakan constructor injection untuk `CarService`.
 
 ### 2. Jelaskan keuntungan menerapkan prinsip SOLID pada proyek ini beserta contohnya.
 
 * **Mudah di-extend tanpa memodifikasi kode yang ada (OCP)**
-    * Dengan adanya `ProductRepositoryInterface`, jika ingin beralih dari in-memory ke database, cukup buat class baru seperti `JpaProductRepository implements ProductRepositoryInterface`. Tidak perlu mengubah satu baris pun di `ProductServiceImpl` atau `ProductController`, sehingga mengurangi risiko memperkenalkan bug.
+  * Dengan adanya `ProductRepositoryInterface`, jika ingin beralih dari in-memory ke database, cukup buat class baru seperti `JpaProductRepository implements ProductRepositoryInterface`. Tidak perlu mengubah satu baris pun di `ProductServiceImpl` atau `ProductController`, sehingga mengurangi risiko memperkenalkan bug.
 
 * **Mudah di-test (DIP + SRP)**
-    * Karena service bergantung pada interface (bukan concrete class), kita bisa dengan mudah membuat mock dalam unit test menggunakan `@Mock ProductRepositoryInterface`. Test berjalan cepat tanpa perlu koneksi database atau setup yang rumit.
+  * Karena service bergantung pada interface (bukan concrete class), kita bisa dengan mudah membuat mock dalam unit test menggunakan `@Mock ProductRepositoryInterface`. Test berjalan cepat tanpa perlu koneksi database atau setup yang rumit.
 
 * **Kode lebih mudah dipahami dan dikelola (SRP)**
-    * Setiap class memiliki tanggung jawab yang jelas. Ketika ada bug pada penyimpanan data, developer langsung tahu harus melihat ke repository. Ketika ada masalah routing, langsung periksa controller. Tidak ada pencampuran tanggung jawab.
+  * Setiap class memiliki tanggung jawab yang jelas. Ketika ada bug pada penyimpanan data, developer langsung tahu harus melihat ke repository. Ketika ada masalah routing, langsung periksa controller. Tidak ada pencampuran tanggung jawab.
 
 * **Perubahan terisolasi dan minim dampak (LSP + ISP)**
-    * Karena controller bergantung pada interface, kita bisa mengganti implementasi kapan saja selama kontrak interface terpenuhi. Misalnya, bisa membuat `CachedProductServiceImpl` untuk menambahkan caching tanpa mengubah controller.
+  * Karena controller bergantung pada interface, kita bisa mengganti implementasi kapan saja selama kontrak interface terpenuhi. Misalnya, bisa membuat `CachedProductServiceImpl` untuk menambahkan caching tanpa mengubah controller.
 
 * **Fleksibilitas tinggi (DIP)**
-    * Constructor injection membuat dependency eksplisit. Jika ingin mengganti implementasi service, cukup ubah konfigurasi Spring tanpa mengubah kode controller.
+  * Constructor injection membuat dependency eksplisit. Jika ingin mengganti implementasi service, cukup ubah konfigurasi Spring tanpa mengubah kode controller.
 
 ### 3. Jelaskan kerugian jika tidak menerapkan prinsip SOLID pada proyek ini beserta contohnya.
 
 * **Kode sulit di-test (tanpa DIP)**
-    * Sebelum refactoring, `CarServiceImpl` menggunakan field injection dengan concrete class `CarRepository`. Ini membuat unit testing sulit karena tidak bisa mengganti repository dengan mock tanpa reflection, dan test bergantung pada implementasi konkret yang rentan rusak jika repository berubah.
+  * Sebelum refactoring, `CarServiceImpl` menggunakan field injection dengan concrete class `CarRepository`. Ini membuat unit testing sulit karena tidak bisa mengganti repository dengan mock tanpa reflection, dan test bergantung pada implementasi konkret yang rentan rusak jika repository berubah.
 
 * **Perubahan berantai / ripple effect (tanpa OCP)**
-    * Tanpa interface, jika mengubah nama method atau return type di `ProductRepository`, maka `ProductServiceImpl` juga harus diubah, bahkan bisa berdampak ke `ProductController`. Satu perubahan kecil memicu perubahan besar di banyak tempat.
+  * Tanpa interface, jika mengubah nama method atau return type di `ProductRepository`, maka `ProductServiceImpl` juga harus diubah, bahkan bisa berdampak ke `ProductController`. Satu perubahan kecil memicu perubahan besar di banyak tempat.
 
 * **Tanggung jawab campur aduk (tanpa SRP)**
-    * Sebelum refactoring, `CarController` memiliki `System.out.println()` debug logging di dalam method `editCarPost()`. Controller menjadi tempat "dump" untuk berbagai kode yang tidak relevan, membuat debugging sulit dan kode tidak modular.
+  * Sebelum refactoring, `CarController` memiliki `System.out.println()` debug logging di dalam method `editCarPost()`. Controller menjadi tempat "dump" untuk berbagai kode yang tidak relevan, membuat debugging sulit dan kode tidak modular.
 
 * **Interface yang terlalu gemuk (tanpa ISP)**
-    * Jika `ProductService` dan `CarService` digabungkan menjadi satu interface besar `EshopService`, maka `ProductController` dipaksa bergantung pada method-method car yang tidak relevan. Ini membuat kode menjadi *tightly coupled* dan rentan terhadap perubahan yang tidak terkait.
+  * Jika `ProductService` dan `CarService` digabungkan menjadi satu interface besar `EshopService`, maka `ProductController` dipaksa bergantung pada method-method car yang tidak relevan. Ini membuat kode menjadi *tightly coupled* dan rentan terhadap perubahan yang tidak terkait.
 
 * **Substitusi menjadi tidak aman (tanpa LSP)**
-    * Jika subclass mengubah perilaku yang diharapkan (misalnya throw exception alih-alih return `null`), program bisa crash secara tidak terduga. Contohnya, jika implementasi `CarService` yang baru memiliki method `findById()` yang throw exception ketika car tidak ditemukan, maka `CarController` akan error karena mengasumsikan perilaku tertentu.
+  * Jika subclass mengubah perilaku yang diharapkan (misalnya throw exception alih-alih return `null`), program bisa crash secara tidak terduga. Contohnya, jika implementasi `CarService` yang baru memiliki method `findById()` yang throw exception ketika car tidak ditemukan, maka `CarController` akan error karena mengasumsikan perilaku tertentu.
 
 ---
 </details>
@@ -72,37 +97,37 @@ Prinsip SOLID yang diterapkan pada proyek eshop ini:
 <details>
 <summary>Module 2</summary>
 
-# Module 2 
+# Module 2
 
 ### 1. List the code quality issue(s) that you fixed during the exercise and explain your strategy on fixing them.
 
 Issues yang dideteksi oleh SonarCloud dan perbaikannya:
 
 * **Risiko Keamanan (Izin GitHub Actions)**
-    * **Masalah:** File `scorecard.yml` menggunakan `permissions: read-all`, yang memberikan hak akses baca ke seluruh repositori secara berlebihan.
-    * **Strategi:** Membatasi izin menjadi hanya `contents: read` untuk mengikuti prinsip hak akses minimum, sehingga mengurangi risiko keamanan.
+  * **Masalah:** File `scorecard.yml` menggunakan `permissions: read-all`, yang memberikan hak akses baca ke seluruh repositori secara berlebihan.
+  * **Strategi:** Membatasi izin menjadi hanya `contents: read` untuk mengikuti prinsip hak akses minimum, sehingga mengurangi risiko keamanan.
 * **Deklarasi Exception yang Redundan**
-    * **Masalah:** Penggunaan `throws Exception` pada test method padahal tidak ada checked exception yang dilempar.
-    * **Strategi:** Menghapus deklarasi tersebut agar kode lebih bersih.
+  * **Masalah:** Penggunaan `throws Exception` pada test method padahal tidak ada checked exception yang dilempar.
+  * **Strategi:** Menghapus deklarasi tersebut agar kode lebih bersih.
 * **Metode Kosong (Empty Method)**
-    * **Masalah:** Adanya metode `setUp()` yang kosong di `ProductRepositoryTest` tanpa komentar penjelas.
-    * **Strategi:** Menambahkan baris komentar karena inisialisasi sudah ditangani secara otomatis oleh anotasi `@InjectMocks`, sehingga menghilangkan kode yang tidak berfungsi (*dead code*).
+  * **Masalah:** Adanya metode `setUp()` yang kosong di `ProductRepositoryTest` tanpa komentar penjelas.
+  * **Strategi:** Menambahkan baris komentar karena inisialisasi sudah ditangani secara otomatis oleh anotasi `@InjectMocks`, sehingga menghilangkan kode yang tidak berfungsi (*dead code*).
 * **Perbaikan Dependency Injection**
-    * **Masalah:** Penggunaan Field Injection (`@Autowired` pada variabel langsung) yang dianggap kurang baik untuk pengujian unit.
-    * **Strategi:** Mengubahnya menjadi Constructor Injection pada Controller agar dependensi menjadi transparan, mempermudah pengujian, dan mendukung prinsip imutabilitas.
+  * **Masalah:** Penggunaan Field Injection (`@Autowired` pada variabel langsung) yang dianggap kurang baik untuk pengujian unit.
+  * **Strategi:** Mengubahnya menjadi Constructor Injection pada Controller agar dependensi menjadi transparan, mempermudah pengujian, dan mendukung prinsip imutabilitas.
 * **Penggunaan Tag Anchor sebagai Tombol (Accessibility)**
-    * **Masalah:** Penggunaan tag `<a>` untuk aksi fungsional (seperti tombol hapus/edit) yang seharusnya dilakukan oleh elemen `<button>`.
-    * **Strategi:** Menambahkan atribut `role="button"` pada tag `<a>` untuk menginformasikan bahwa elemen ini berfungsi sebagai tombol aksi, bukan sekadar link biasa
+  * **Masalah:** Penggunaan tag `<a>` untuk aksi fungsional (seperti tombol hapus/edit) yang seharusnya dilakukan oleh elemen `<button>`.
+  * **Strategi:** Menambahkan atribut `role="button"` pada tag `<a>` untuk menginformasikan bahwa elemen ini berfungsi sebagai tombol aksi, bukan sekadar link biasa
 * **Import yang Tidak Digunakan (Unused Import)**
-    * **Masalah:** Adanya import `org.openqa.selenium.WebElement` yang tidak lagi digunakan dalam kode.
-    * **Strategi:** Menghapus impor tersebut untuk merapikan bagian header file dan mengurangi polusi kode.
+  * **Masalah:** Adanya import `org.openqa.selenium.WebElement` yang tidak lagi digunakan dalam kode.
+  * **Strategi:** Menghapus impor tersebut untuk merapikan bagian header file dan mengurangi polusi kode.
 * **Kode yang Di-comment (Commented-out Code)**
-    * **Masalah:** Terdapat blok kode yang dinonaktifkan dengan komentar di dalam file Java.
-    * **Strategi:** Menghapus blok kode tersebut karena riwayat perubahan sudah terekam dengan aman di sistem kontrol versi (Git), sehingga kode utama tetap bersih dan mudah dibaca.
+  * **Masalah:** Terdapat blok kode yang dinonaktifkan dengan komentar di dalam file Java.
+  * **Strategi:** Menghapus blok kode tersebut karena riwayat perubahan sudah terekam dengan aman di sistem kontrol versi (Git), sehingga kode utama tetap bersih dan mudah dibaca.
 
 ### 2. Look at your CI/CD workflows (GitHub)/pipelines (GitLab). Do you think the current implementation has met the definition of Continuous Integration and Continuous Deployment? Explain the reasons (minimum 3 sentences)!
 
-Menurut saya, implementasi saat ini sudah memenuhi definisi Continuous Integration (CI) dan Continuous Deployment (CD). 
+Menurut saya, implementasi saat ini sudah memenuhi definisi Continuous Integration (CI) dan Continuous Deployment (CD).
 
 **Continuous Integration** terpenuhi karena saya telah mengonfigurasi pipeline otomatis menggunakan GitHub Actions yang dipicu oleh setiap push ke repositori. Rangkaian ini mencakup eksekusi unit test secara otomatis dan integrasi dengan SonarCloud untuk melakukan analisis kualitas kode statis (static code analysis). Proses ini memastikan bahwa setiap integrasi kode baru tetap memenuhi standar kualitas dan tidak merusak fitur yang sudah ada sebelumnya.
 
@@ -116,11 +141,11 @@ Menurut saya, implementasi saat ini sudah memenuhi definisi Continuous Integrati
 </summary>
 # Module 1
 
-## Reflection 1 
+## Reflection 1
 
-**You already implemented two new features using Spring Boot. Check again your source code 
-and evaluate the coding standards that you have learned in this module. Write clean code 
-principles and secure coding practices that have been applied to your code.  If you find any 
+**You already implemented two new features using Spring Boot. Check again your source code
+and evaluate the coding standards that you have learned in this module. Write clean code
+principles and secure coding practices that have been applied to your code.  If you find any
 mistake in your source code, please explain how to improve your code.**
 
 ### Clean code principles applied:
@@ -173,7 +198,7 @@ Setelah melakukan evaluasi ulang terhadap kode yang telah dibuat, saya menemukan
 
 - Validasi input masih dapat ditingkatkan, khususnya untuk memastikan bahwa:
   - Data produk tidak bernilai `null` atau kosong
-  - Kuantitas produk hanya menerima bilangan bulat positif  
+  - Kuantitas produk hanya menerima bilangan bulat positif
 
   Validasi ini akan meningkatkan ketahanan aplikasi terhadap input yang tidak valid atau berpotensi merusak data.
 
