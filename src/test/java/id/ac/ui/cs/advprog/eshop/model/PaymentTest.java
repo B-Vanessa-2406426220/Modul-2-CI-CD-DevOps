@@ -29,7 +29,7 @@ public class PaymentTest {
                 System.currentTimeMillis(), "V", OrderStatus.WAITING_PAYMENT.getValue());
 
         paymentData = new HashMap<>();
-        paymentData.put("voucherCode", "ESHOP123456789AB");
+        paymentData.put("voucherCode", "ESHOP12345678ABC");
 
         payment = new Payment("1424f2b7-2af2-4b6e-a43b-a25cb252e958", order,
                 "VOUCHER", "SUCCESS", paymentData);
@@ -42,6 +42,23 @@ public class PaymentTest {
         assertEquals("VOUCHER", payment.getMethod());
         assertEquals("SUCCESS", payment.getStatus());
         assertEquals(paymentData, payment.getPaymentData());
+    }
+
+    @Test
+    void testSetOrder() {
+        List<Product> newProducts = new ArrayList<>();
+        Product newProduct = new Product();
+        newProduct.setProductId("new-product-id");
+        newProduct.setProductName("New Product");
+        newProduct.setProductQuantity(1);
+        newProducts.add(newProduct);
+
+        Order newOrder = new Order("new-order-id", newProducts,
+                System.currentTimeMillis(), "Setiawan", OrderStatus.WAITING_PAYMENT.getValue());
+
+        payment.setOrder(newOrder);
+        assertEquals(newOrder, payment.getOrder());
+        assertNotEquals(order, payment.getOrder());
     }
 
     @Test
@@ -145,5 +162,59 @@ public class PaymentTest {
 
         payment.setPaymentData(invalidVoucherData);
         assertEquals("ESHOP12345678ABC", payment.getPaymentData().get("voucherCode"));
+    }
+
+    @Test
+    void testBankTransferConstructorWithMissingBankName() {
+        Map<String, String> invalidBankData = new HashMap<>();
+        invalidBankData.put("referenceCode", "REF123456789");
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Payment("bank-payment-id", order,
+                    "TRANSFER_BANK", "SUCCESS", invalidBankData);
+        });
+
+        assertEquals("paymentData is not valid", exception.getMessage());
+    }
+
+    @Test
+    void testBankTransferConstructorWithMissingReferenceCode() {
+        Map<String, String> invalidBankData = new HashMap<>();
+        invalidBankData.put("bankName", "BCA");
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Payment("bank-payment-id", order,
+                    "TRANSFER_BANK", "SUCCESS", invalidBankData);
+        });
+
+        assertEquals("paymentData is not valid", exception.getMessage());
+    }
+
+    @Test
+    void testBankTransferConstructorWithNullData() {
+        Map<String, String> invalidBankData = new HashMap<>();
+        invalidBankData.put("bankName", null);
+        invalidBankData.put("referenceCode", null);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Payment("bank-payment-id", order,
+                    "TRANSFER_BANK", "SUCCESS", invalidBankData);
+        });
+
+        assertEquals("paymentData is not valid", exception.getMessage());
+    }
+
+    @Test
+    void testBankTransferConstructorWithEmptyData() {
+        Map<String, String> invalidBankData = new HashMap<>();
+        invalidBankData.put("bankName", "");
+        invalidBankData.put("referenceCode", "");
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Payment("bank-payment-id", order,
+                    "TRANSFER_BANK", "SUCCESS", invalidBankData);
+        });
+
+        assertEquals("paymentData is not valid", exception.getMessage());
     }
 }
