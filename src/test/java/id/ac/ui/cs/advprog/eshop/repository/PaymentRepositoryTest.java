@@ -37,13 +37,13 @@ class PaymentRepositoryTest {
 
         Map<String, String> paymentData = new HashMap<>();
         paymentData.put("voucherCode", "ESHOP12345678ABC");
-        Payment payment = new Payment(order,
+        Payment payment = new Payment("payment-1", order,
                 PaymentMethod.VOUCHER.getValue(), paymentData);
 
         Map<String, String> paymentData2 = new HashMap<>();
         paymentData2.put("bankName", "BNI");
         paymentData2.put("referenceCode", "BNIMURAH");
-        Payment payment2 = new Payment(order2,
+        Payment payment2 = new Payment("payment-2", order2,
                 PaymentMethod.TRANSFER_BANK.getValue(), paymentData2);
 
         payments.add(payment);
@@ -73,7 +73,7 @@ class PaymentRepositoryTest {
         paymentData.put("bankName", "BCA");
         paymentData.put("referenceCode", "BCAMURAH");
 
-        Payment newPayment = new Payment(payment.getOrder(),
+        Payment newPayment = new Payment(payment.getId(), payment.getOrder(),
                 PaymentMethod.TRANSFER_BANK.getValue(), paymentData);
         Payment result = paymentRepository.save(newPayment);
 
