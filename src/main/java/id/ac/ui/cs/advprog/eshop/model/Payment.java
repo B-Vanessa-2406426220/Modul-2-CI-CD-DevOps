@@ -17,7 +17,7 @@ public class Payment {
     public Payment(String id, Order order, String method, String status, Map<String, String> paymentData) {
     }
 
-    public Payment(String id, String method, Map<String, String> paymentData, String status) {
+    public Payment(String id, Order order, String method, Map<String, String> paymentData) {
     }
 
     public void setStatus(String status) {
