@@ -156,4 +156,33 @@ class CarRepositoryTest {
         Iterator<Car> carIterator = carRepository.findAll();
         assertFalse(carIterator.hasNext());
     }
+
+    @Test
+    void testFindByIdIfMoreThanOneCarAndSearchSecondCar() {
+        Car car1 = new Car();
+        car1.setCarId("car-001");
+        car1.setCarName("Toyota");
+        carRepository.create(car1);
+
+        Car car2 = new Car();
+        car2.setCarId("car-002");
+        car2.setCarName("Honda");
+        carRepository.create(car2);
+
+        Car found = carRepository.findById("car-002");
+
+        assertNotNull(found);
+        assertEquals("car-002", found.getCarId());
+    }
+
+    @Test
+    void testFindByIdNotFoundButListIsNotEmpty() {
+        Car car = new Car();
+        car.setCarId("car-001");
+        carRepository.create(car);
+
+        Car result = carRepository.findById("non-existent");
+
+        assertNull(result);
+    }
 }

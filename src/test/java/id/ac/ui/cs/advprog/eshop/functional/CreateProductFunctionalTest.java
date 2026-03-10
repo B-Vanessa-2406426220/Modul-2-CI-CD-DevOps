@@ -39,6 +39,13 @@ class CreateProductFunctionalTest {
         driver.findElement(By.cssSelector("button[type='submit']")).click();
 
         String currentUrl = driver.getCurrentUrl();
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         assertTrue(currentUrl.contains("/product/list"));
         
         String pageSource = driver.getPageSource();

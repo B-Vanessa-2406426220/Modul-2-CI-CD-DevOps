@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pay Order</title>
+</head>
+<body>
+<h2>Pay Order</h2>
+<form action="/order/pay" method="post">
+    <label for="orderId">Order ID:</label>
+    <input type="text" id="orderId" name="orderId" required>
+    <button type="submit">Pay Now</button>
+</form>
+</body>
+</html>
