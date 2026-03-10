@@ -1,5 +1,7 @@
 package id.ac.ui.cs.advprog.eshop.service;
 
+import id.ac.ui.cs.advprog.eshop.enums.OrderStatus;
+import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import id.ac.ui.cs.advprog.eshop.model.Order;
 import id.ac.ui.cs.advprog.eshop.model.Payment;
 import id.ac.ui.cs.advprog.eshop.repository.PaymentRepository;
@@ -26,16 +28,19 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public Payment setStatus(Payment payment, String status) {
-        if (!status.equals("SUCCESS") && !status.equals("REJECTED")) {
+        boolean isSuccess = PaymentStatus.SUCCESS.getValue().equals(status);
+        boolean isRejected = PaymentStatus.REJECTED.getValue().equals(status);
+
+        if (!isSuccess && !isRejected) {
             throw new IllegalArgumentException("Invalid payment status");
         }
 
         payment.setStatus(status);
 
-        if ("SUCCESS".equals(status)) {
-            payment.getOrder().setStatus("SUCCESS");
-        } else if ("REJECTED".equals(status)) {
-            payment.getOrder().setStatus("FAILED");
+        if (isSuccess) {
+            payment.getOrder().setStatus(OrderStatus.SUCCESS.getValue());
+        } else {
+            payment.getOrder().setStatus(OrderStatus.FAILED.getValue());
         }
 
         return paymentRepository.save(payment);
