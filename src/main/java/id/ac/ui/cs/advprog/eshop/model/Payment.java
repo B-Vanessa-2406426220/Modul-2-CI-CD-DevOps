@@ -1,5 +1,7 @@
 package id.ac.ui.cs.advprog.eshop.model;
 
+import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
+import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,10 +19,9 @@ public class Payment {
     String status;
     Map<String, String> paymentData;
 
-    public Payment(String id, Order order, String method, String status, Map<String, String> paymentData) {
+    public Payment(String id, Order order, String method, Map<String, String> paymentData) {
         this.id = id;
         this.method = method;
-        this.status = status;
 
         if (order == null) {
             throw new IllegalArgumentException("order is null");
@@ -29,19 +30,19 @@ public class Payment {
         }
 
         if (paymentData == null) {
-            throw new IllegalArgumentException("paymentData is null");
+            this.status = PaymentStatus.REJECTED.getValue();
         } else if (!validatePaymentData(paymentData)) {
-            throw new IllegalArgumentException("paymentData is not valid");
+            this.status = PaymentStatus.REJECTED.getValue();
         } else {
+            this.status = PaymentStatus.SUCCESS.getValue();
             this.paymentData = paymentData;
         }
     }
 
     private boolean validatePaymentData(Map<String, String> paymentData) {
-        String[] methodList = {"VOUCHER", "TRANSFER_BANK"};
-        if (this.method.equals(methodList[0])) {
+        if (this.method.equals(PaymentMethod.VOUCHER.getValue())) {
             return validateVoucherPayment(paymentData.get("voucherCode"));
-        } else if (this.method.equals(methodList[1])) {
+        } else if (this.method.equals(PaymentMethod.TRANSFER_BANK.getValue())){
             return validateBankPayment(paymentData);
         } else {
             return false;
@@ -91,16 +92,18 @@ public class Payment {
     }
 
     public void setStatus(String status) {
-        String[] statusList = {"SUCCESS", "REJECTED"};
-        if (Arrays.asList(statusList).contains(status)) {
+        if (PaymentStatus.contains(status)) {
             this.status = status;
+        } else {
+            throw new IllegalArgumentException("status is not valid");
         }
     }
 
     public void setMethod(String method) {
-        String[] methodList = {"VOUCHER", "BANK_TRANSFER"};
-        if (Arrays.asList(methodList).contains(method)) {
+        if (PaymentMethod.contains(method)) {
             this.method = method;
+        } else {
+            throw new IllegalArgumentException("method is not valid");
         }
     }
 
